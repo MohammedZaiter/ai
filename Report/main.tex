@@ -1,0 +1,149 @@
+% IEEE conference format (6-8 pages). Compile on Overleaf or with pdflatex.
+% Figures are taken from ../results/figures (copy them next to this file on Overleaf).
+\documentclass[conference]{IEEEtran}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{amsmath}
+\usepackage{hyperref}
+\graphicspath{{../results/figures/}{figures/}}
+
+\begin{document}
+
+\title{From Scratch to Transfer Learning: An Empirical Study of CNN Design Choices on CIFAR-10}
+
+\author{
+\IEEEauthorblockN{Name 1, Name 2, Name 3}
+\IEEEauthorblockA{Master 2 AI -- Programming for AI\\
+Group X}
+}
+
+\maketitle
+
+\begin{abstract}
+% 150-200 words: problem, method, main numbers (baseline acc, best scratch acc, best transfer acc), main conclusion.
+TODO
+\end{abstract}
+
+\begin{IEEEkeywords}
+convolutional neural networks, data augmentation, transfer learning, fine-tuning, CIFAR-10
+\end{IEEEkeywords}
+
+\section{Introduction}
+% Context, objectives (the 3 tasks), contributions, structure of the paper.
+TODO
+
+\section{Dataset and Pipeline}
+% CIFAR-10, 45k/5k/10k split, normalization, DataLoaders, seed / reproducibility.
+TODO
+
+\section{Methodology}
+\subsection{Baseline CNN}
+% Architecture table (layer, output shape), number of parameters, receptive field,
+% cross-entropy loss, Adam lr=1e-3, 20 epochs, best checkpoint on val accuracy.
+TODO
+
+\subsection{Controlled Experiments}
+% One-factor-at-a-time protocol, list of variations (depth, kernel, stride/padding, BN,
+% optimizers, learning rates, schedulers, augmentation, MixUp formula).
+TODO
+
+\subsection{Transfer Learning}
+% ResNet-18 (ImageNet), frozen / finetune_layer4 / finetune_all, reduced lr, 128x128 inputs,
+% ImageNet normalization, 10% vs 100% training data.
+TODO
+
+\section{Experiments and Results}
+\subsection{Baseline}
+\begin{figure}[t]
+\centering
+\includegraphics[width=\linewidth]{task1_curves.png}
+\caption{Baseline CNN: training and validation loss and accuracy.}
+\label{fig:baseline_curves}
+\end{figure}
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.85\linewidth]{task1_confusion_matrix.png}
+\caption{Baseline CNN: normalized confusion matrix on the test set.}
+\label{fig:baseline_cm}
+\end{figure}
+% Discuss test accuracy, overfitting epoch, most confused classes.
+TODO
+
+\subsection{Architectural Variations and Hyperparameters}
+\begin{table}[t]
+\centering
+\caption{Comparative benchmark (Task 2). Values from results/task2\_benchmark.csv.}
+\label{tab:benchmark}
+\begin{tabular}{lrrrrr}
+\toprule
+Run & Params & RF & Latency (ms) & Peak val acc & Gap \\
+\midrule
+Baseline & & & & & \\
+Conv 2 / Conv 5 & & & & & \\
+Kernel 5 / 7 & & & & & \\
+Stride 2 / No padding & & & & & \\
+BatchNorm & & & & & \\
+SGD / AdamW & & & & & \\
+lr 1e-2 / 1e-4 & & & & & \\
+StepLR / Cosine & & & & & \\
+Aug basic / full / MixUp & & & & & \\
+\midrule
+Best combined & & & & & \\
+\bottomrule
+\end{tabular}
+\end{table}
+% One paragraph per group with numbers + receptive field discussion.
+TODO
+
+\subsection{Transfer Learning}
+\begin{table}[t]
+\centering
+\caption{Scratch vs frozen vs fine-tuned (Task 3).}
+\label{tab:transfer}
+\begin{tabular}{lrrrrr}
+\toprule
+Setup & Trainable & Ep. to 80\% & Test acc (10\%) & Test acc (100\%) & s/epoch \\
+\midrule
+Scratch & & & & & \\
+Frozen & & & & & \\
+Fine-tune layer4 & & & & & \\
+Fine-tune all & & & & & \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\linewidth]{task3_convergence_100pct.png}
+\caption{Validation curves of the four setups (100\% of the training data).}
+\label{fig:convergence}
+\end{figure}
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.85\linewidth]{task3_data_efficiency.png}
+\caption{Data efficiency: test accuracy with 10\% and 100\% of the training data.}
+\label{fig:data_efficiency}
+\end{figure}
+% Discuss data efficiency, convergence speed, final metrics, cost (params, time).
+TODO
+
+\section{Discussion}
+% What worked and why (link to theory), limitations (single seed, 20 epochs, 128px), future work.
+TODO
+
+\section{Conclusion}
+TODO
+
+\begin{thebibliography}{1}
+\bibitem{krizhevsky2009} A. Krizhevsky, ``Learning multiple layers of features from tiny images,'' Tech. Rep., 2009.
+\bibitem{he2016} K. He, X. Zhang, S. Ren, and J. Sun, ``Deep residual learning for image recognition,'' in \emph{CVPR}, 2016.
+\bibitem{ioffe2015} S. Ioffe and C. Szegedy, ``Batch normalization: Accelerating deep network training by reducing internal covariate shift,'' in \emph{ICML}, 2015.
+\bibitem{kingma2015} D. P. Kingma and J. Ba, ``Adam: A method for stochastic optimization,'' in \emph{ICLR}, 2015.
+\bibitem{loshchilov2019} I. Loshchilov and F. Hutter, ``Decoupled weight decay regularization,'' in \emph{ICLR}, 2019.
+\bibitem{zhang2018} H. Zhang, M. Cisse, Y. N. Dauphin, and D. Lopez-Paz, ``mixup: Beyond empirical risk minimization,'' in \emph{ICLR}, 2018.
+\bibitem{yosinski2014} J. Yosinski, J. Clune, Y. Bengio, and H. Lipson, ``How transferable are features in deep neural networks?'' in \emph{NeurIPS}, 2014.
+\end{thebibliography}
+
+\end{document}

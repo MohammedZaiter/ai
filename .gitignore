@@ -1,0 +1,13 @@
+# dataset (downloaded automatically by torchvision)
+data/
+
+# python / jupyter
+.venv/
+__pycache__/
+.ipynb_checkpoints/
+*.pyc
+
+# latex build files
+Report/*.aux
+Report/*.log
+Report/*.out
