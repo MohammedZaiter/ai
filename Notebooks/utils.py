@@ -1,10 +1,3 @@
-# =====================================================
-#  utils.py - helper code shared by all project notebooks
-#  (data, models, training loop, evaluation, checkpoints, plots)
-#
-#  The notebooks are run from the Notebooks/ folder, so all paths are relative to it.
-# =====================================================
-
 import json
 import os
 import random
@@ -27,7 +20,6 @@ from torch.utils.data import DataLoader, Subset
 # -----------------------------------------------------
 IN_COLAB = "google.colab" in sys.modules
 
-# on Colab the dataset is stored on the local disk of the machine (much faster than Google Drive),
 # checkpoints and results are stored in the project folder on Drive so they are not lost
 DATA_DIR = "/content/data" if IN_COLAB else "../data"
 CHECKPOINT_DIR = "../Checkpoints"
@@ -101,23 +93,18 @@ def get_dataloaders(batch_size=128, augmentation="none", img_size=32, imagenet_n
     transform_train = get_transforms(augmentation, img_size, imagenet_norm)
     transform_val = get_transforms("none", img_size, imagenet_norm)
 
-    # the train set is loaded twice: with augmentation (train part) and without (val part)
     train_dataset = torchvision.datasets.CIFAR10(root=DATA_DIR, train=True, download=True, transform=transform_train)
     val_dataset = torchvision.datasets.CIFAR10(root=DATA_DIR, train=True, download=True, transform=transform_val)
     test_dataset = torchvision.datasets.CIFAR10(root=DATA_DIR, train=False, download=True, transform=transform_val)
 
-    # fixed random split (same seed -> same 45k / 5k split for every experiment)
     generator = torch.Generator().manual_seed(42)
     indices = torch.randperm(len(train_dataset), generator=generator).tolist()
     val_indices = indices[:val_size]
     train_indices = indices[val_size:]
 
-    # keep only a part of the training images (data-efficiency experiment, Task 3)
     if train_fraction < 1.0:
         train_indices = train_indices[:int(len(train_indices) * train_fraction)]
 
-    # num_workers=0 avoids multiprocessing crash on Windows
-    # on Colab (Linux) 2 workers load the next batches in parallel -> faster training
     if num_workers is None:
         num_workers = 2 if IN_COLAB else 0
 
