@@ -11,3 +11,6 @@ __pycache__/
 Report/*.aux
 Report/*.log
 Report/*.out
+
+# trained weights (~325 MB): shared via Google Drive and the submission zip, not GitHub
+Checkpoints/*.pth
